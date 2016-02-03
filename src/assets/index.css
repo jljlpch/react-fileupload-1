@@ -1,8 +1,17 @@
-.mtfe-react-fileupload {
-    color: olive;
-    display: flex;
+.aloha-file-upload {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-.mtfe-react-fileupload h1 {
-    font-size: 20px;
+.aloha-file-upload input[type="file"] {
+  width: 100%;
+  height: 100%;
+  font-size:100px;
+  cursor: pointer;
 }
