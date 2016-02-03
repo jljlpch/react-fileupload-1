@@ -12,7 +12,7 @@ npm --registry=http://r.npm.sankuai.com install @mtfe/react-fileupload
 ## Development
 
 ```
-git clone [Please fill your git repo here]
+git clone [git@github.com:sprintsun/react-fileupload.git]
 npm --registry=http://r.npm.sankuai.com install
 npm start
 ```
@@ -58,7 +58,7 @@ React.render(<Component />, container);
 |  abortFileIndex      |  需要终止上传的文件索引, 更新该属性, 可以中止文件上传                       | number    |                         |  -1|
 |  removeFileIndex     |  需要移除文件的文件索引, 更新该属性, 可以中止文件上传, 从等待队列/成功上传队列/上传失败队列 中删除文件    | number | |   -1|
 
-### 事件
+### event
 
 | 事件名       | 说明                                        | 参数      |
 |------------|---------------------------------------------|-----------|
