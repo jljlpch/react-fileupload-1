@@ -77,13 +77,14 @@ React.render(<Component />, container);
 
 
 ## Question
-Q: 如何获取file的index参数?
+Q: 如何获取file的index参数?           
 A: 在添加到等待队列过程中,file对象都被注入了index属性, 可以通过各种事件暴露的file参数的file.index获取
 
-Q: afterChecked事件什么时候触发?
+
+Q: afterChecked事件什么时候触发?           
 A: 通过各种检查后(包括如果有自定义的uploadChecker), 在添加到等待上传队列前触发
 
-Q: 支持哪些浏览器?
+Q: 支持哪些浏览器?            
 A: 目前只在最新版的chrome上测试过
 
 ## License
