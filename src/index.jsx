@@ -85,7 +85,7 @@ export default class extends Component {
     uploadChecker: PropTypes.func,
     resultChecker: PropTypes.func,
     clipboardData: PropTypes.object,
-    files: PropTypes.object,
+    files: PropTypes.array,
     dropNode: PropTypes.object,
     abortFileIndex: PropTypes.number,
     removeFileIndex: PropTypes.number,
@@ -153,19 +153,22 @@ export default class extends Component {
       }
 
       // 文件后缀检测
-      if(isCheckFileType) {
-        if(file.name) {
-          let ext = file.name.slice(file.name.lastIndexOf("."));
-          if (extArr.indexOf(ext.toLowerCase()) == -1) {
-            this.eventEmitter.emit('notAllow', file);
-            return false;
-          }
-        } else if(file.type) { // 从剪贴板粘贴的没有file.name
-          let ext = file.type.match(/\w+\/(\w+)/)[1];
-          if (extArr.indexOf(ext.toLowerCase()) == -1) {
-            this.eventEmitter.emit('notAllow', file);
-            return false;
-          }
+      if (isCheckFileType) {
+        let ext, isNotAllow = true;
+        if (file.name) {
+          ext = file.name.split('.');
+          ext = ext[ext.length - 1].toLowerCase();
+        } else if (file.type) {// 从剪贴板粘贴的没有file.name
+          ext = file.type.match(/\w+\/(\w+)/)[1];
+        }
+
+        for(let item of extArr) {
+          isNotAllow = item.indexOf(ext) == -1;
+          if(!isNotAllow) break;
+        }
+        if (isNotAllow) {
+          this.eventEmitter.emit('notAllow', file);
+          return false;
         }
       }
     }
@@ -302,13 +305,7 @@ export default class extends Component {
         for (var key in req.data) { // 附加字段
           xhr.setRequestHeader(key, req.data[key]);
         }
-        if (req.postType === 'blob') {
-          var BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.MSBlobBuilder || window.BlobBuilder;
-          var bb = new BlobBuilder(), blob;
-          bb.append(file);
-          blob = bb.getBlob();
-          xhr.send(blob);
-        } else if (req.postType === 'buffer') {
+        if (req.postType === 'buffer') {
           var reader = new FileReader();
           reader.readAsArrayBuffer(file);
           reader.onload = function () {
@@ -361,18 +358,30 @@ export default class extends Component {
 
   // 从剪贴板添加上传文件
   addFileFromClipboard(clp) {
-    // 剪切板图片
-    if (clp.types.length === 1 && clp.types[0] === "Files" && clp.items.length === 1 &&
-      clp.items[0].kind === "file" && clp.items[0].type.match(/^image\//i)) {
-      var pasteFile = clp.items[0].getAsFile();
-      this.addFiles([pasteFile]);
+    // 如果是 Safari 直接 return
+    if ( !(clp && clp.items) ) {
+      return ;
     }
 
-    // 电子表格转化为图片
-    if (clp.types.length === 4 && clp.types[3] === "Files" && clp.items.length === 4 &&
-      clp.items[3].kind === "file" && clp.items[3].type.match(/^image\//i)) {
-      var pasteFile = clp.items[3].getAsFile();
-      this.addFiles([pasteFile]);
+    var ua = window.navigator.userAgent;
+
+    // Mac平台下Chrome49版本以下 复制Finder中的文件的Bug Hack掉
+    if(clp.items && clp.items.length === 2 && clp.items[0].kind === "string" && clp.items[1].kind === "file" &&
+        clp.types && clp.types.length === 2 && clp.types[0] === "text/plain" && clp.types[1] === "Files" &&
+        ua.match(/Macintosh/i) && Number(ua.match(/Chrome\/(\d{2})/i)[1]) < 49){
+      return;
+    }
+
+    for(var i = 0; i < clp.items.length; i++) {
+      var item = clp.items[i];
+      if(item.kind == "file"){
+        var blob = item.getAsFile();
+        if (blob.size === 0) {
+          return;
+        }
+        this.addFiles([blob]);
+        // blob 就是从剪切板获得的文件 后面可以进行上传或其他操作 上面的return是在某些情况下的错误兼容
+      }
     }
   }
 

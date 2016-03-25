@@ -53,7 +53,7 @@ React.render(<Component />, container);
 |  resultChecker   | 结果检查, 返回true才会触发上传的success事件                | function     |                         |  noop   |
 |  events     |   组件事件对象   | object | |  null |
 |  clipboardData      |  剪贴板数据, 更新该属性, 传入event.clipboardData可以触发上传事件                      | object    |                         |  null|
-|  files      |  上传的文件, 更新该属性, 传入files对象可以触发上传事件                      | object    |                         |  null|
+|  files      |  上传的文件, 更新该属性, 传入files对象可以触发上传事件                      | array    |                         |  null|
 |  dropNode      |  拖拽组件节点, 更新该属性, 传入组件节点可以通过拖拽事件触发上传事件                      | object    |                         |  null|
 |  abortFileIndex      |  需要终止上传的文件索引, 更新该属性, 可以中止文件上传                       | number    |                         |  -1|
 |  removeFileIndex     |  需要移除文件的文件索引, 更新该属性, 可以中止文件上传, 从等待队列/成功上传队列/上传失败队列 中删除文件    | number | |   -1|

@@ -10,6 +10,8 @@ export default class Page extends React.Component {
     super();
     this.onPaste = this.onPaste.bind(this);
     this.state = {
+      uploadImg: '',
+      percentage: 0,
       clipboardData: null,
       dropNode: null
     }
@@ -49,14 +51,17 @@ export default class Page extends React.Component {
       afterChecked: function() {
         console.log('完成文件检查!');
       },
-      start: function() {
+      start: () => {
+        this.setState({percentage: 0});
         console.log('文件开始上传!');
       },
-      progress: function(loaded, total, percentage, file) {
+      progress: (loaded, total, percentage, file) => {
         console.log('上传', percentage, '%');
+        this.setState({percentage: percentage})
       },
-      success: function(res) {
+      success: (res) => {
         console.log('文件上传成功!');
+        this.setState({uploadImg: res.data.thumbnail})
       },
       error: function(e, file) {
         console.error(e);
@@ -71,27 +76,35 @@ export default class Page extends React.Component {
       }
     }
 
+    var progressBarStyle = {width: (this.state.percentage || 0) + '%', height: 10, backgroundColor: 'green', transition: 'width .6s ease'};
+
     return (
-      <div>
-        <div>
-          <a style={{position: 'relative', color: 'red', textDecoration: 'underline'}}>
-            点击上传
-            <FileUpload
-              req={req}
-              accept="image/*"
-              maxSize="2MB"
-              maxFiles={5}
-              clipboardData={this.state.clipboardData}
-              dropNode={this.state.dropNode}
-              resultChecker={this.resultChecker}
-              events={events}
-            />
-          </a>
+      <div style={{display: 'flex'}}>
+        <div style={{width: '300'}}>
+          <div>
+            <a style={{position: 'relative', color: 'red', textDecoration: 'underline'}}>
+              点击上传
+              <FileUpload
+                req={req}
+                accept="image/jpg, image/png"
+                maxSize="2MB"
+                maxFiles={5}
+                clipboardData={this.state.clipboardData}
+                dropNode={this.state.dropNode}
+                resultChecker={this.resultChecker}
+                events={events}
+              />
+            </a>
+          </div>
+          <p>
+            <input type="text" className="input" placeholder="支持从剪贴板粘贴上传" onPaste={this.onPaste} />
+          </p>
+          <textarea ref="dropNode" className="textarea" placeholder="支持拖拽到此处上传"></textarea>
         </div>
-        <p>
-          <input type="text" className="input" placeholder="支持从剪贴板粘贴上传" onPaste={this.onPaste} />
-        </p>
-        <textarea ref="dropNode" className="textarea" placeholder="支持拖拽到此处上传"></textarea>
+        <div style={{width: 200}}>
+          <img src={this.state.uploadImg} style={{width: 200, height: 200}}/>
+          <div style={progressBarStyle}></div>
+        </div>
       </div>
     );
   }
