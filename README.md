@@ -34,13 +34,14 @@ React.render(<Component />, container);
 |------------|---------------------------------------------|-----------|----------------|---------|
 |  cls      |  组件class                       | string    |                         |  aloha-file-upload|
 |  style      |  自定义样式                      | object    |                         |  {}|
-|  req.url      |  文件上传服务器地址,必须设置                       | string    |                         |  ''|
+|  req.url      |  文件上传服务器地址,必须设置                       | string / function   |                         |  ''|
 |  req.timeout  |  超时时间(单位毫秒), 0为不限制超时时间           | number    |                |  0|
 |  req.data     |  上传时需要一起提交的数据  | object    |                |  null |
 |  req.headers     |  附加在request header上的键值对  | object    |                |  null |
 |  req.dataType |  预期服务器返回的数据类型                       | string    |       'json' / 'text'         |  json|
 |  req.postType |  上传方式，'': 直接上传 / form: FormData / blob: Blob / buffer: FileReader | string    |    '' / 'form' / 'blob' / 'buffer'         |  'form' |
 |  name      |  服务端接收文件的key           | string    |                |  files[] |
+|  filename      |  自定义上传文件的文件名          | string    |                |  file.name |
 |  accept      |  支持上传的文件类型, 具体使用请参考HTML5 input 标签的accept 属性           | string    |                |  * |
 |  maxSize   |  文件大小限制, 单位支持['B', 'KB', 'MB', 'GB', 'TB'], 如果没传单位则默认为B          | string    |   |  5MB      |
 |  maxFiles      |  最大可以上传文件数量，-1不限制           | number    |             |  -1     |
@@ -80,9 +81,11 @@ React.render(<Component />, container);
 Q: 如何获取file的index参数?           
 A: 在添加到等待队列过程中,file对象都被注入了index属性, 可以通过各种事件暴露的file参数的file.index获取
 
-
 Q: afterChecked事件什么时候触发?           
 A: 通过各种检查后(包括如果有自定义的uploadChecker), 在添加到等待上传队列前触发
+
+Q: 为什么我对props.files赋值了, 却没有触发上传?           
+A: props.files等属性, 必须通过"更新该属性"才能够触发上传, 初始时就赋值并无法触发.
 
 Q: 支持哪些浏览器?            
 A: 目前只在最新版的chrome上测试过

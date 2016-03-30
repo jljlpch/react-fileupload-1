@@ -41,6 +41,7 @@ export default class extends Component {
     style: {},
     req: defaultPropsReq,
     name: 'files[]', // 服务端接收文件的key
+    filename: null, // 自定义上传文件的文件名,默认使用file.name
     accept: '*', // 资源类型
     maxSize: '5MB', // 文件大小限制
     maxFiles: -1, // 最大可上传文件数量，-1不限制
@@ -67,7 +68,7 @@ export default class extends Component {
     cls: PropTypes.string,
     style: PropTypes.object,
     req: PropTypes.shape({
-      url: PropTypes.string.isRequired,
+      url: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
       timeout: PropTypes.number,
       data: PropTypes.object,
       headers: PropTypes.object,
@@ -85,7 +86,7 @@ export default class extends Component {
     uploadChecker: PropTypes.func,
     resultChecker: PropTypes.func,
     clipboardData: PropTypes.object,
-    files: PropTypes.array,
+    files: PropTypes.oneOfType([PropTypes.array, PropTypes.instanceOf(FileList)]),
     dropNode: PropTypes.object,
     abortFileIndex: PropTypes.number,
     removeFileIndex: PropTypes.number,
@@ -202,7 +203,7 @@ export default class extends Component {
   // 上传
   upload() {
     var self = this, queue = this.queue, eventEmitter = this.eventEmitter, xhrList = this.xhrList;
-    var {disabled, name, concurrent, resultChecker} = this.props;
+    var {disabled, name, filename, concurrent, resultChecker} = this.props;
     var req = Object.assign(defaultPropsReq, this.props.req);
 
     if(disabled) {
@@ -279,14 +280,15 @@ export default class extends Component {
         complete(file);
       };
 
-      xhr.open('POST', req.url, true);
+      let url = typeof req.url === 'function' ? req.url(file) : req.url;
+      xhr.open('POST', url, true);
 
       if (req.postType === 'form') {
         var formData = new FormData();
         for (var key in req.data) { // 附加表单字段
           formData.append(key, req.data[key]);
         }
-        formData.append(name, file);
+        filename ? formData.append(name, file, filename) : formData.append(name, file);
         xhr.send(formData);
 
         // request header附加字段
