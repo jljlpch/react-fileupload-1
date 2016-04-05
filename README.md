@@ -41,7 +41,7 @@ React.render(<Component />, container);
 |  req.dataType |  预期服务器返回的数据类型                       | string    |       'json' / 'text'         |  json|
 |  req.postType |  上传方式，'': 直接上传 / form: FormData / blob: Blob / buffer: FileReader | string    |    '' / 'form' / 'blob' / 'buffer'         |  'form' |
 |  name      |  服务端接收文件的key           | string    |                |  files[] |
-|  filename      |  自定义上传文件的文件名          | string    |                |  file.name |
+|  filename      |  自定义上传文件的文件名          | string / function    |                |  file.name |
 |  accept      |  支持上传的文件类型, 具体使用请参考HTML5 input 标签的accept 属性           | string    |                |  * |
 |  maxSize   |  文件大小限制, 单位支持['B', 'KB', 'MB', 'GB', 'TB'], 如果没传单位则默认为B          | string    |   |  5MB      |
 |  maxFiles      |  最大可以上传文件数量，-1不限制           | number    |             |  -1     |
