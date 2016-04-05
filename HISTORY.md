@@ -16,5 +16,8 @@ first commit
 
 ## 0.0.4
 * 增加props.filename属性,支持自定义上传文件的文件名
-* props.url现在还支持函数, 可以在上传操作中动态改变url地址了
+* props.req.url现在还支持函数, 可以在上传操作中动态改变url地址了
 * 完善props.files类型检查
+
+## 0.0.5
+* props.filename支持函数

@@ -76,6 +76,7 @@ export default class extends Component {
       postType: PropTypes.oneOf(['', 'form', 'blob', 'buffer'])
     }),
     name: PropTypes.string,
+    filename: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
     maxSize: PropTypes.string,
     maxFiles: PropTypes.number,
     maxWaitFiles: PropTypes.number,
@@ -280,7 +281,7 @@ export default class extends Component {
         complete(file);
       };
 
-      let url = typeof req.url === 'function' ? req.url(file) : req.url;
+      var url = typeof req.url === 'function' ? req.url(file) : req.url;
       xhr.open('POST', url, true);
 
       if (req.postType === 'form') {
@@ -288,8 +289,13 @@ export default class extends Component {
         for (var key in req.data) { // 附加表单字段
           formData.append(key, req.data[key]);
         }
-        filename ? formData.append(name, file, filename) : formData.append(name, file);
-        xhr.send(formData);
+
+        if(filename) {
+          var file_name = typeof filename === 'function' ? filename(file) : filename;
+          formData.append(name, file, file_name);
+        } else {
+          formData.append(name, file)
+        }
 
         // request header附加字段
         if (req.headers) {
@@ -302,6 +308,8 @@ export default class extends Component {
             xhr.setRequestHeader(key, file.headers[key]);
           }
         }
+
+        xhr.send(formData);
       } else {
         xhr.setRequestHeader(name, file.name); // 提供给服务端的file name
         for (var key in req.data) { // 附加字段
