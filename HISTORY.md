@@ -21,3 +21,8 @@ first commit
 
 ## 0.0.5
 * props.filename支持函数
+
+## 0.1.0
+* 修复props.files类型检查时使用FileList导致无法在使用服务端渲染的bug
+* advance demo 新增对剪贴板上传文件文件名的处理
+* 更新readme.md, 新增竞品比较介绍

@@ -25,6 +25,9 @@ var React = require('react');
 React.render(<Component />, container);
 ```
 
+## Compare
+![compare](compare.jpg 'compare')
+
 ## API
 
 ### props

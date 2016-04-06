@@ -8,13 +8,13 @@ export default class Page extends React.Component {
 
   constructor() {
     super();
-    this.onPaste = this.onPaste.bind(this);
     this.state = {
       uploadImg: '',
       percentage: 0,
       clipboardData: null,
       dropNode: null
     }
+    this.onPaste = this.onPaste.bind(this);
   }
 
   componentDidMount() {
@@ -23,10 +23,6 @@ export default class Page extends React.Component {
 
   onPaste(e) {
     this.setState({clipboardData: e.clipboardData})
-  }
-
-  resultChecker(result) {
-    return result.code == 200;
   }
 
   render() {
@@ -80,26 +76,27 @@ export default class Page extends React.Component {
 
     return (
       <div style={{display: 'flex'}}>
-        <div style={{width: '300'}}>
+        <div style={{width: '400'}}>
           <div>
             <a style={{position: 'relative', color: 'red', textDecoration: 'underline'}}>
               点击上传
               <FileUpload
                 req={req}
+                filename={file => file.name || Date.now()}
                 accept="image/jpg, image/png"
                 maxSize="2MB"
                 maxFiles={5}
                 clipboardData={this.state.clipboardData}
                 dropNode={this.state.dropNode}
-                resultChecker={this.resultChecker}
+                resultChecker={result => result.code == 200}
                 events={events}
               />
             </a>
           </div>
           <p>
-            <input type="text" className="input" placeholder="支持从剪贴板粘贴上传" onPaste={this.onPaste} />
+            <input type="text" className="input" placeholder="支持从剪贴板粘贴上传, 默认将文件名设置为Date.now()" onPaste={this.onPaste} style={{width: 300}} />
           </p>
-          <textarea ref="dropNode" className="textarea" placeholder="支持拖拽到此处上传"></textarea>
+          <textarea ref="dropNode" className="textarea" placeholder="支持拖拽到此处上传" style={{width: 300}} />
         </div>
         <div style={{width: 200}}>
           <img src={this.state.uploadImg} style={{width: 200, height: 200}}/>

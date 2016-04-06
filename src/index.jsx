@@ -87,7 +87,7 @@ export default class extends Component {
     uploadChecker: PropTypes.func,
     resultChecker: PropTypes.func,
     clipboardData: PropTypes.object,
-    files: PropTypes.oneOfType([PropTypes.array, PropTypes.instanceOf(FileList)]),
+    files: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     dropNode: PropTypes.object,
     abortFileIndex: PropTypes.number,
     removeFileIndex: PropTypes.number,
