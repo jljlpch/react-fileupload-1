@@ -48,7 +48,7 @@ export default class Page extends React.Component {
         console.log('完成文件检查!');
       },
       start: () => {
-        this.setState({percentage: 0});
+        this.setState({percentage: 0, uploadImg: ''});
         console.log('文件开始上传!');
       },
       progress: (loaded, total, percentage, file) => {

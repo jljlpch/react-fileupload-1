@@ -363,7 +363,7 @@ export default class extends Component {
   onChange(e) {
     var files = e.currentTarget.files;
     !this.props.disabled && this.addFiles(files);
-    this.props.allowSameFile && this.refs.form.reset();
+    this.props.allowSameFile && (this.refs.file.value = '');
   }
 
   // 从剪贴板添加上传文件
@@ -445,11 +445,7 @@ export default class extends Component {
 
   render() {
     let {name, cls, style, accept, multiple} = this.props;
-    return (
-      <form ref="form" className={cls} style={style}>
-        <input type="file" name={name} onChange={this.onChange} accept={accept} multiple={multiple}/>
-      </form>
-    )
+    return <input type="file" ref="file" className={cls} style={style} name={name} onChange={this.onChange} accept={accept} multiple={multiple}/>
   }
 }
 

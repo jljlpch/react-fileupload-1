@@ -1,6 +1,6 @@
 {
   "name": "@mtfe/react-fileupload",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React文件上传组件",
   "author": {
     "name": "zhangxiao",

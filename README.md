@@ -26,7 +26,7 @@ React.render(<Component />, container);
 ```
 
 ## Compare
-![compare](compare.jpg 'compare')
+![compare](http://mss.vip.sankuai.com/v1/mss_758360c7d14e488b9e97cd68043246d0/paste/pHEC3In.jpg 'compare')
 
 ## API
 

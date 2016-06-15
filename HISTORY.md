@@ -26,3 +26,6 @@ first commit
 * 修复props.files类型检查时使用FileList导致无法在使用服务端渲染的bug
 * advance demo 新增对剪贴板上传文件文件名的处理
 * 更新readme.md, 新增竞品比较介绍
+
+## 0.1.1
+* 移除内置form节点, 现在通过(file.value = '')来清空file, 规避嵌套form表单的问题
